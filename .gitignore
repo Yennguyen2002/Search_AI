@@ -3,3 +3,6 @@
 __pycache__/
 .vscode
 *.json
+*/Lab01/*.eps
+Lab01/*.eps
+*/*.eps
