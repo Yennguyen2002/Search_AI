@@ -1,17 +1,6 @@
 import numpy as np
 
-def kha_dfs(matrix, start, end, path, visited):
-    # Set current node as visited
-    path.append(start)
-    if start == end:
-        return
 
-    visited[start] = end
-
-    # For every node of the graph
-    for i in range(len(matrix)):
-        if (matrix[start][i] == 1 and ( i not in visited.items())):
-            DFS(matrix, i, end)
 
 def DFS(matrix, start, end):
     """
@@ -35,28 +24,38 @@ def DFS(matrix, start, end):
     """
     # TODO: 
    
-    path=[]
-    visited={}
-    #kha_dfs(matrix, start, end, path, visited)
+    n = len(matrix)
+    path = []
+    visited = {}
+    
+    visited[start] = start
+    def DFS_Search(matrix, start, end):
+        if start == end:
+            return 
+        for i in range (n):
+            if (matrix[start][i] == 1 and (i not in visited.keys())):
+                visited[i] = start
+                DFS_Search(matrix,i,end)
 
-    stack = [start]
+    DFS_Search(matrix,start,end)
+    print(visited)
 
-    while len(stack) != 0:
-        print("----", stack)
-        vertex = stack.pop()
-        path.append(vertex)
-        if vertex == end:
-            break
-        # if vertex in path:
-        #     continue
-        visited[vertex] = end
-        for i in range(len(matrix)):
-            if (matrix[vertex][i] == 1 and ( i not in visited.items())):
-                stack.append(i)
-
+    def findPath(visited,path, start, end):
+        t = end
+        path.append(t)
+        while(1):
+            #print(visited[t])
+            #print(path)
+            path.append(visited[t])
+            if visited[t] == start:
+                return
+            t = visited[t]
+            
+    
+    
+    findPath(visited,path, start, end)
     print(path)
-
-    return visited, path
+    return visited, path[::-1]
 
 def BFS(matrix, start, end):
     """

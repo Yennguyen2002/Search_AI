@@ -5,6 +5,7 @@ if __name__ == '__main__':
     """
         Argument from command line: `python main.py <input_file_path> <algorithm> <time_delay>(optional)`
         search_algorithm must be one of ['bfs', 'dfs', 'ucs', 'greedy', 'astar']
+        cmd : python Search_AI/Lab01/main.py Search_AI/Lab01/input.txt  dfs
     """
     if (len(sys.argv)<3) or (len(sys.argv)>5):
         raise Exception("Wrong input!!!")
