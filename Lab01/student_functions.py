@@ -1,5 +1,5 @@
 import numpy as np
-
+from queue import PriorityQueue
 
 
 def DFS(matrix, start, end):
@@ -109,6 +109,32 @@ def UCS(matrix, start, end):
     # TODO:  
     path=[]
     visited={}
+    q = PriorityQueue()
+
+    visited[start] = start
+    q.put((0, start, [start])) 
+
+    while not q.empty():
+        CurNode = q.get()
+        print("---------")
+        print(CurNode)
+        for i in range(len(matrix)):
+            if matrix[CurNode[1]][i] != 0:
+                print("i: ", i )
+                print(CurNode)
+                visited[i] = CurNode[1]
+                temp_path = []
+                temp_path[:] =  CurNode[2]
+                temp_path.append(i)
+
+                #print((CurNode[0] + matrix[CurNode[1]][i], i, temp_path))
+                q.put((CurNode[0] + matrix[CurNode[1]][i], i, temp_path))
+                if temp_path[-1] == end:
+                    print(temp_path)
+                    print(visited)
+                    return visited, temp_path
+                
+                
     return visited, path
 
 
