@@ -1,9 +1,13 @@
-a = {}
-a[1]  = 1
-a[2] = None
-print(a)
-print(type(a[1]))
-print(2 not in a.items())
+from queue import PriorityQueue
+path=[]
+visited={}
+q = PriorityQueue()
 
-b = [1,2,3,4]
-print(b[-2])
+visited[1] = 1
+q.put((3, 1, [1,4,5])) 
+q.put((0, 1, [1,4,5])) 
+q.put((4, 1, [1,4,5])) 
+
+print(q)
+a = q.get()
+print(q.qsize())
