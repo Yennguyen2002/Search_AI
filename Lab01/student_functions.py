@@ -1,5 +1,7 @@
+from re import S
 import numpy as np
 from queue import PriorityQueue
+import math
 
 
 def DFS(matrix, start, end):
@@ -163,29 +165,65 @@ def GBFS(matrix, start, end):
     visited={}
     return visited, path
 
+def reconstruct_path(visited, start, end):
+    total_path = [end]
+    while end in visited.keys():
+        if (start == end):
+            break
+
+        end = visited[end]
+        total_path.append(end)
+    return total_path[::-1]
+
 def Astar(matrix, start, end, pos):
-    """
-    A* Search algorithm
-     Parameters:
-    ---------------------------
-    matrix: np array UCS
-        The graph's adjacency matrix
-    start: integer 
-        starting node
-    end: integer
-        ending node
-    pos: dictionary. keys are nodes, values are positions
-        positions of graph nodes
-    Returns
-    ---------------------
-    visited
-        The dictionary contains visited nodes: each key is a visited node, 
-        each value is the key's adjacent node which is visited before key.
-    path: list
-        Founded path
-    """
-    # TODO: 
-    path=[]
-    visited={}
+    path=[]     # total path
+    visited={}  #came from
+    visited[start] = start
+
+    heuristic = [[ 0 for i in range(len(matrix[_]))] for _ in range(len(matrix))]
+    for i in range(len(matrix)):
+        for j in range(len(matrix[0])):
+            heuristic[i][j] = math.sqrt((pos[i][0] - pos[j][0])**2 + (pos[i][1] - pos[j][1])**2)
+
+    open_set = []
+    open_set.append(start)
+    
+    g_score = [float("inf")] * len(matrix)
+    g_score[start] = 0
+
+    f_score = [float("inf")] * len(matrix)
+    f_score[start] = heuristic[start][end]
+
+    while open_set:
+        cur = -1
+        lowest_f_score = float("inf")
+        for i in open_set:
+            if f_score[i] < lowest_f_score :
+                cur = i
+                lowest_f_score = f_score[i]
+        print("cur: ", cur)        
+        open_set.remove(cur)
+
+        if cur == end:
+            path = reconstruct_path(visited, start, end)
+            break
+        
+        for i in range(len(matrix[cur])):
+            if matrix[cur][i] != 0 and ( i not in visited.keys()):
+                if g_score[cur] + matrix[cur][i] < g_score[i]:
+                    visited[i] = cur
+                    g_score[i] = g_score[cur] + matrix[cur][i]
+                    f_score[i] = g_score[i] + heuristic[i][end]
+                    print("Updating distance of node ", i, " to ", g_score[i], " and priority to ", f_score[i])
+                    
+                    if i not in open_set:
+                        open_set.append(i)
+
+
+        print("visited: ", visited)
+        print(open_set)
+
+    print(visited)
+    print(path)
     return visited, path
 
